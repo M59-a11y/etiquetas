@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etiquetas Colacril 126/Folha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@400;500&family=JetBrains+Mono:wght@400;700&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:        #141414;
+  --surface:   #1e1e1e;
+  --border:    #2e2e2e;
+  --accent:    #f97316;
+  --accent2:   #fb923c;
+  --text:      #f5f5f5;
+  --muted:     #777;
+  --mono:      'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Grain overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+}
+
+/* ════════════════════════════════════
+   LAYOUT PRINCIPAL
+════════════════════════════════════ */
+#painel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ── Coluna esquerda: marca ── */
+.col-marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.col-marca::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.marca-label {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+  animation: fadeUp .5s ease both;
+}
+
+.marca-titulo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  animation: fadeUp .5s .1s ease both;
+}
+
+.marca-titulo span {
+  color: var(--accent);
+}
+
+.marca-sub {
+  margin-top: 1.6rem;
+  font-size: .9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 320px;
+  animation: fadeUp .5s .2s ease both;
+}
+
+.badge-row {
+  display: flex;
+  gap: .6rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  animation: fadeUp .5s .3s ease both;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .3rem .8rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.badge.destaque {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(249,115,22,.06);
+}
+
+/* ── Linhas decorativas ── */
+.linhas-deco {
+  position: absolute;
+  top: 0; right: 0;
+  width: 160px;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.linhas-deco span {
+  position: absolute;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--border);
+  opacity: .4;
+}
+.linhas-deco span:nth-child(1) { right: 20px; }
+.linhas-deco span:nth-child(2) { right: 50px; opacity:.2; }
+.linhas-deco span:nth-child(3) { right: 90px; opacity:.1; }
+
+/* ── Coluna direita: formulário ── */
+.col-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  gap: 2rem;
+  animation: fadeUp .5s .15s ease both;
+}
+
+.form-section-title {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.form-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.campo label {
+  display: block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .5rem;
+}
+
+.campo-inner {
+  position: relative;
+}
+
+.campo input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  padding: .8rem 1.2rem;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  text-align: center;
+  letter-spacing: .04em;
+  appearance: textfield;
+}
+.campo input::-webkit-inner-spin-button,
+.campo input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.campo input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(249,115,22,.12);
+}
+
+/* Stepper buttons */
+.steppers {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.steppers button {
+  width: 28px;
+  height: 22px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .8rem;
+  line-height: 1;
+  transition: color .15s, border-color .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.steppers button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── Painel de resumo ── */
+.resumo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem 1.6rem;
+}
+
+.resumo-item {}
+.resumo-item .r-label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .2rem;
+}
+.resumo-item .r-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.resumo-item .r-val.accent { color: var(--accent); }
+
+/* ── Botão imprimir ── */
+.btn-imprimir {
+  position: relative;
+  overflow: hidden;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 1.1rem 2rem;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+}
+.btn-imprimir::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.campo-duplo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.campo-duplo .campo input {
+  font-size: 1.5rem;
+}
+
+.btn-imprimir:hover { background: var(--accent2); }
+.btn-imprimir:active { transform: scale(.98); }
+
+/* Toggle ordem */
+.ordem-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.ordem-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .04em;
+  padding: .6rem .5rem;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+}
+.ordem-btn:hover { border-color: #555; color: var(--text); }
+.ordem-btn.ativo {
+  background: rgba(249,115,22,.1);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Rodapé da coluna ── */
+.col-form-footer {
+  margin-top: .5rem;
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: #444;
+  text-align: center;
+  letter-spacing: .06em;
+}
+
+/* ── Animações ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE (telas pequenas)
+════════════════════════════════════ */
+@media (max-width: 680px) {
+  #painel {
+    grid-template-columns: 1fr;
+  }
+  .col-marca {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2.5rem;
+  }
+  .col-form { padding: 2.5rem 2rem; }
+  .linhas-deco { display: none; }
+}
+
+/* ════════════════════════════════════
+   IMPRESSÃO
+════════════════════════════════════ */
+#area-impressao { display: none; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #painel { display: none !important; }
+  #area-impressao { display: block; background: #fff; }
+  body { background: #fff !important; }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  .pagina-etiqueta {
+    width: 210mm;
+    height: 297mm;
+    page-break-after: always;
+    page-break-inside: avoid;
+    padding-top: 13mm;
+    padding-left: 6.5mm;
+    padding-right: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .grade {
+    display: grid;
+    grid-template-columns: repeat(7, 26mm);
+    grid-template-rows: repeat(18, 15mm);
+    column-gap: 2.5mm;
+    row-gap: 0mm;
+  }
+
+  .etiqueta {
+    width: 26mm;
+    height: 15mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #000;
+    overflow: hidden;
+    /* border: 0.2pt dashed #bbb; */
+  }
+}
+</style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f97316">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Etiquetas CEDC">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     PAINEL
+══════════════════════════════════ -->
+<div id="painel">
+
+  <!-- Coluna esquerda -->
+  <div class="col-marca">
+    <div class="linhas-deco">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="marca-label">// Gerador de etiquetas</div>
+
+    <h1 class="marca-titulo">
+      Cola<span>cril</span><br>
+      126<br>
+      /Folha
+    </h1>
+
+    <p class="marca-sub">
+      Numeração sequencial para etiquetas adesivas.<br>
+      Defina o número inicial e a quantidade de folhas A4 para imprimir.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge destaque">26 × 15 mm</span>
+      <span class="badge">7 × 18</span>
+      <span class="badge">CA4349</span>
+      <span class="badge">A4 Portrait</span>
+    </div>
+  </div>
+
+  <!-- Coluna direita -->
+  <div class="col-form">
+
+    <div class="form-section-title">Configuração</div>
+
+    <div class="campos">
+
+      <div class="campo">
+        <label>Número inicial</label>
+        <div class="campo-inner">
+          <input type="number" id="numInicio" value="1" min="1" max="999999">
+          <div class="steppers">
+            <button onclick="step('numInicio', 1)" title="Aumentar">▲</button>
+            <button onclick="step('numInicio', -1)" title="Diminuir">▼</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Total de páginas</label>
+        <div class="campo-inner">
+          <input type="number" id="numPaginas" value="1" min="1" max="100">
+          <div class="steppers">
+            <button onclick="step('numPaginas', 1)" title="Aumentar">▲</button>
+            <button onclick="step('numPaginas', -1)" title="Diminuir">▼</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-duplo">
+        <div class="campo">
+          <label>Imprimir da página</label>
+          <div class="campo-inner">
+            <input type="number" id="pagInicio" value="1" min="1" max="100">
+            <div class="steppers">
+              <button onclick="step('pagInicio', 1)" title="Aumentar">▲</button>
+              <button onclick="step('pagInicio', -1)" title="Diminuir">▼</button>
+            </div>
+          </div>
+        </div>
+        <div class="campo">
+          <label>Até a página</label>
+          <div class="campo-inner">
+            <input type="number" id="pagFim" value="1" min="1" max="100">
+            <div class="steppers">
+              <button onclick="step('pagFim', 1)" title="Aumentar">▲</button>
+              <button onclick="step('pagFim', -1)" title="Diminuir">▼</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Resumo -->
+    <div class="resumo">
+      <div class="resumo-item">
+        <div class="r-label">Início</div>
+        <div class="r-val" id="rInicio">1</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Fim</div>
+        <div class="r-val accent" id="rFim">126</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Total etiquetas</div>
+        <div class="r-val" id="rTotal">126</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Folhas A4</div>
+        <div class="r-val" id="rPaginas">1</div>
+      </div>
+    </div>
+
+    <!-- Ordem de impressão -->
+    <div class="campo">
+      <label>Ordem de impressão</label>
+      <div class="ordem-toggle">
+        <button id="btnOrdem1" class="ordem-btn ativo" onclick="setOrdem(1)">Primeira → Última</button>
+        <button id="btnOrdem2" class="ordem-btn" onclick="setOrdem(-1)">Última → Primeira</button>
+      </div>
+    </div>
+
+    <!-- Botão -->
+    <button class="btn-imprimir" onclick="gerarEImprimir()">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      Imprimir Etiquetas
+    </button>
+
+    <div class="col-form-footer">
+      Teste em folha branca antes de usar as etiquetas reais
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ÁREA DE IMPRESSÃO
+══════════════════════════════════ -->
+<div id="area-impressao"></div>
+
+<script>
+const inputInicio  = document.getElementById('numInicio');
+const inputPaginas = document.getElementById('numPaginas');
+const inputPagIni  = document.getElementById('pagInicio');
+const inputPagFim  = document.getElementById('pagFim');
+
+function step(id, delta) {
+  const el  = document.getElementById(id);
+  const val = parseInt(el.value) || 1;
+  const min = parseInt(el.min)   || 1;
+  const max = parseInt(el.max)   || parseInt(inputPaginas.value) || 100;
+  el.value  = Math.min(max, Math.max(min, val + delta));
+  atualizaInfo();
+}
+
+const anoFull = new Date().getFullYear();
+const ano = String(anoFull).slice(-2);
+
+function fmt(n) {
+  return n + '/' + ano;
+}
+
+function atualizaInfo() {
+  const inicio  = parseInt(inputInicio.value)  || 1;
+  const paginas = parseInt(inputPaginas.value) || 1;
+
+  // Atualiza o max dos campos de intervalo sem forçar o valor
+  inputPagIni.max = paginas;
+  inputPagFim.max = paginas;
+
+  const pi = Math.min(Math.max(parseInt(inputPagIni.value) || 1, 1), paginas);
+  const pf = Math.min(Math.max(parseInt(inputPagFim.value) || paginas, 1), paginas);
+  const piReal = Math.min(pi, pf);
+  const pfReal = Math.max(pi, pf);
+
+  const numIniSel = inicio + (piReal - 1) * 126;
+  const numFimSel = inicio + pfReal * 126 - 1;
+
+  document.getElementById('rInicio').textContent  = fmt(numIniSel);
+  document.getElementById('rFim').textContent     = fmt(numFimSel);
+  document.getElementById('rTotal').textContent   = (pfReal - piReal + 1) * 126;
+  document.getElementById('rPaginas').textContent = (pfReal - piReal + 1) + ' de ' + paginas;
+}
+
+inputInicio.addEventListener('input', atualizaInfo);
+inputPaginas.addEventListener('input', atualizaInfo);
+inputPagIni.addEventListener('input', atualizaInfo);
+inputPagFim.addEventListener('input', atualizaInfo);
+atualizaInfo();
+
+let ordemImpressao = 1; // 1 = primeira→última, -1 = última→primeira
+
+function setOrdem(val) {
+  ordemImpressao = val;
+  document.getElementById('btnOrdem1').classList.toggle('ativo', val === 1);
+  document.getElementById('btnOrdem2').classList.toggle('ativo', val === -1);
+}
+
+function gerarEImprimir() {
+  const inicio  = parseInt(inputInicio.value)  || 1;
+  const paginas = parseInt(inputPaginas.value) || 1;
+  const pi      = parseInt(inputPagIni.value)  || 1;
+  const pf      = parseInt(inputPagFim.value)  || paginas;
+
+  const area = document.getElementById('area-impressao');
+  area.innerHTML = '';
+
+  // Monta array só com as páginas do intervalo selecionado (índice base 0)
+  const ordemPaginas = [];
+  for (let p = pi - 1; p < pf; p++) ordemPaginas.push(p);
+  if (ordemImpressao === -1) ordemPaginas.reverse();
+
+  for (const p of ordemPaginas) {
+    const paginaDiv = document.createElement('div');
+    paginaDiv.className = 'pagina-etiqueta';
+
+    const grade = document.createElement('div');
+    grade.className = 'grade';
+
+    const numBase = inicio + p * 126;
+    for (let e = 0; e < 126; e++) {
+      const etq = document.createElement('div');
+      etq.className = 'etiqueta';
+      etq.textContent = fmt(numBase + e);
+      grade.appendChild(etq);
+    }
+
+    paginaDiv.appendChild(grade);
+    area.appendChild(paginaDiv);
+  }
+
+  window.print();
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(r => console.log("SW registrado:", r.scope))
+      .catch(e => console.warn("SW falhou:", e));
+  });
+}
+</script>
+</body>
+</html>

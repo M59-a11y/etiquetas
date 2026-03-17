@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etiquetas Patologia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@400;500&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:      #141414;
+  --surface: #1e1e1e;
+  --border:  #2e2e2e;
+  --accent:  #f97316;
+  --accent2: #fb923c;
+  --text:    #f5f5f5;
+  --muted:   #777;
+  --mono:    'Roboto Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Grain ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .5;
+}
+
+/* ════════════════════════════
+   PAINEL
+════════════════════════════ */
+#painel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.col-marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.col-marca::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.linhas-deco { position: absolute; top: 0; right: 0; width: 160px; height: 100%; overflow: hidden; pointer-events: none; }
+.linhas-deco span { position: absolute; right: 0; width: 1px; height: 100%; background: var(--border); opacity: .4; }
+.linhas-deco span:nth-child(1) { right: 20px; }
+.linhas-deco span:nth-child(2) { right: 50px; opacity:.2; }
+.linhas-deco span:nth-child(3) { right: 90px; opacity:.1; }
+
+.marca-label {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+  animation: fadeUp .5s ease both;
+}
+.marca-titulo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  animation: fadeUp .5s .1s ease both;
+}
+.marca-titulo span { color: var(--accent); }
+.marca-sub {
+  margin-top: 1.6rem;
+  font-size: .9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 320px;
+  animation: fadeUp .5s .2s ease both;
+}
+.badge-row { display: flex; gap: .6rem; margin-top: 2rem; flex-wrap: wrap; animation: fadeUp .5s .3s ease both; }
+.badge {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .3rem .8rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.badge.destaque { border-color: var(--accent); color: var(--accent); background: rgba(249,115,22,.06); }
+
+/* Coluna formulário */
+.col-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  gap: 1.6rem;
+  animation: fadeUp .5s .15s ease both;
+}
+
+.form-section-title {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.form-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.campos { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.campo label {
+  display: block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .5rem;
+}
+.campo-inner { position: relative; }
+.campo input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: .7rem 1.2rem;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  text-align: center;
+  letter-spacing: .04em;
+  appearance: textfield;
+}
+.campo input::-webkit-inner-spin-button,
+.campo input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.campo input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(249,115,22,.12); }
+
+.steppers {
+  position: absolute; right: 8px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.steppers button {
+  width: 28px; height: 22px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, border-color .15s;
+}
+.steppers button:hover { color: var(--accent); border-color: var(--accent); }
+
+.campo-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.campo-duplo .campo input { font-size: 1.5rem; }
+
+/* Resumo */
+.resumo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6rem 1.2rem;
+}
+.resumo-item .r-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+.resumo-item .r-val { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+.resumo-item .r-val.accent { color: var(--accent); }
+
+/* Ordem */
+.ordem-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ordem-btn {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--muted); font-family: var(--mono); font-size: .7rem;
+  letter-spacing: .04em; padding: .6rem .5rem; cursor: pointer;
+  transition: all .15s; text-align: center;
+}
+.ordem-btn:hover { border-color: #555; color: var(--text); }
+.ordem-btn.ativo { background: rgba(249,115,22,.1); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+/* Botão */
+.btn-imprimir {
+  position: relative; overflow: hidden;
+  background: var(--accent); color: #000; border: none;
+  border-radius: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem; font-weight: 900;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 1rem 2rem; cursor: pointer;
+  transition: background .15s, transform .1s;
+  display: flex; align-items: center; justify-content: center; gap: .7rem;
+}
+.btn-imprimir::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-imprimir:hover { background: var(--accent2); }
+.btn-imprimir:active { transform: scale(.98); }
+.btn-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+.col-form-footer {
+  font-family: var(--mono); font-size: .65rem; color: #444;
+  text-align: center; letter-spacing: .06em;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 680px) {
+  #painel { grid-template-columns: 1fr; }
+  .col-marca { border-right: none; border-bottom: 1px solid var(--border); padding: 3rem 2rem 2.5rem; }
+  .col-form { padding: 2.5rem 2rem; }
+  .linhas-deco { display: none; }
+}
+
+/* ════════════════════════════
+   IMPRESSÃO
+   10 colunas × 18 linhas
+   Cada célula: ~19mm × 15mm
+   Margem: top 10mm, left 5mm
+════════════════════════════ */
+#area-impressao { display: none; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #painel { display: none !important; }
+  #area-impressao { display: block; background: #fff; }
+  body { background: #fff !important; }
+
+  @page { size: A4 landscape; margin: 0; }
+
+  .pagina-etiqueta {
+    width: 297mm;
+    height: 210mm;
+    page-break-after: always;
+    page-break-inside: avoid;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .grade {
+    display: grid;
+    grid-template-columns: repeat(10, 29.7mm);
+    grid-template-rows: repeat(39, 4.5mm);
+    gap: 0;
+    width: 297mm;
+    height: 175.5mm;
+    margin-top: 17mm;
+    border-left: 0.2pt solid #bbb;
+    border-right: 0.2pt solid #bbb;
+    border-top: 0.2pt solid #bbb;
+    border-bottom: 0.2pt solid #bbb;
+    box-sizing: border-box;
+  }
+
+  .etiqueta {
+    width: 29.7mm;
+    height: 4.5mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    font-size: 7pt;
+    font-weight: 700;
+    color: #1a1a1a;
+    border-right: 0.2pt solid #bbb;
+    border-bottom: 0.2pt solid #bbb;
+    overflow: hidden;
+    text-align: center;
+    padding: 0 0.5mm;
+    letter-spacing: 0.02em;
+  }
+}
+</style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f97316">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Etiquetas CEDC">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<div id="painel">
+
+  <div class="col-marca">
+    <div class="linhas-deco"><span></span><span></span><span></span></div>
+    <div class="marca-label">// Gerador de etiquetas</div>
+    <h1 class="marca-titulo">Pato<span>logia</span><br>10 Col<br>/Folha</h1>
+    <p class="marca-sub">
+      Numeração com sufixos A–I para anatomopatológico.<br>
+      Formato: <strong>3411-3/2026</strong> → <strong>3411-3/2026I</strong>
+    </p>
+    <div class="badge-row">
+      <span class="badge destaque">10 × 39</span>
+      <span class="badge">390 etiq/folha</span>
+      <span class="badge">39 nº base/folha</span>
+      <span class="badge">A4 Portrait</span>
+    </div>
+  </div>
+
+  <div class="col-form">
+    <div class="form-section-title">Configuração</div>
+
+    <div class="campos">
+
+      <div class="campo">
+        <label>Número inicial</label>
+        <div class="campo-inner">
+          <input type="number" id="numInicio" value="3411" min="1" max="999999">
+          <div class="steppers">
+            <button onclick="step('numInicio',1)">▲</button>
+            <button onclick="step('numInicio',-1)">▼</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Mês de referência</label>
+        <div class="campo-inner">
+          <input type="number" id="numMes" value="3" min="1" max="12">
+          <div class="steppers">
+            <button onclick="step('numMes',1)">▲</button>
+            <button onclick="step('numMes',-1)">▼</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Total de páginas</label>
+        <div class="campo-inner">
+          <input type="number" id="numPaginas" value="1" min="1" max="100">
+          <div class="steppers">
+            <button onclick="step('numPaginas',1)">▲</button>
+            <button onclick="step('numPaginas',-1)">▼</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-duplo">
+        <div class="campo">
+          <label>Da página</label>
+          <div class="campo-inner">
+            <input type="number" id="pagInicio" value="1" min="1" max="100">
+            <div class="steppers">
+              <button onclick="step('pagInicio',1)">▲</button>
+              <button onclick="step('pagInicio',-1)">▼</button>
+            </div>
+          </div>
+        </div>
+        <div class="campo">
+          <label>Até a página</label>
+          <div class="campo-inner">
+            <input type="number" id="pagFim" value="1" min="1" max="100">
+            <div class="steppers">
+              <button onclick="step('pagFim',1)">▲</button>
+              <button onclick="step('pagFim',-1)">▼</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Resumo -->
+    <div class="resumo">
+      <div class="resumo-item">
+        <div class="r-label">Nº inicial</div>
+        <div class="r-val" id="rInicio">—</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Nº final</div>
+        <div class="r-val accent" id="rFim">—</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Nº base / folha</div>
+        <div class="r-val" id="rTotal">18</div>
+      </div>
+      <div class="resumo-item">
+        <div class="r-label">Páginas</div>
+        <div class="r-val" id="rPaginas">1 de 1</div>
+      </div>
+    </div>
+
+    <!-- Ordem -->
+    <div class="campo">
+      <label>Ordem de impressão</label>
+      <div class="ordem-toggle">
+        <button id="btnOrdem1" class="ordem-btn ativo" onclick="setOrdem(1)">Primeira → Última</button>
+        <button id="btnOrdem2" class="ordem-btn" onclick="setOrdem(-1)">Última → Primeira</button>
+      </div>
+    </div>
+
+    <button class="btn-imprimir" onclick="gerarEImprimir()">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      Imprimir Etiquetas
+    </button>
+
+    <div class="col-form-footer">Teste em folha branca antes de usar</div>
+  </div>
+</div>
+
+<div id="area-impressao"></div>
+
+<script>
+const inputInicio  = document.getElementById('numInicio');
+const inputMes     = document.getElementById('numMes');
+const inputPaginas = document.getElementById('numPaginas');
+const inputPagIni  = document.getElementById('pagInicio');
+const inputPagFim  = document.getElementById('pagFim');
+
+const SUFIXOS = ['', 'A','B','C','D','E','F','G','H','I']; // 10 por linha
+const POR_PAGINA = 39; // 210mm ÷ 5.3mm = ~39 linhas por folha landscape
+
+function step(id, delta) {
+  const el  = document.getElementById(id);
+  const val = parseInt(el.value) || 1;
+  const min = parseInt(el.min)   || 1;
+  const max = parseInt(el.max)   || 999;
+  el.value  = Math.min(max, Math.max(min, val + delta));
+  atualizaInfo();
+}
+
+function fmt(n) {
+  const mes = parseInt(inputMes.value) || 1;
+  const ano = new Date().getFullYear();
+  return n + '-' + mes + '/' + ano;
+}
+
+function atualizaInfo() {
+  const inicio  = parseInt(inputInicio.value)  || 1;
+  const paginas = parseInt(inputPaginas.value) || 1;
+
+  inputPagIni.max = paginas;
+  inputPagFim.max = paginas;
+
+  const pi = Math.min(Math.max(parseInt(inputPagIni.value) || 1, 1), paginas);
+  const pf = Math.min(Math.max(parseInt(inputPagFim.value) || paginas, 1), paginas);
+  const piReal = Math.min(pi, pf);
+  const pfReal = Math.max(pi, pf);
+
+  const numIni = inicio + (piReal - 1) * POR_PAGINA;
+  const numFim = inicio + pfReal * POR_PAGINA - 1;
+
+  document.getElementById('rInicio').textContent  = fmt(numIni);
+  document.getElementById('rFim').textContent     = fmt(numFim);
+  document.getElementById('rTotal').textContent   = POR_PAGINA;
+  document.getElementById('rPaginas').textContent = (pfReal - piReal + 1) + ' de ' + paginas;
+}
+
+[inputInicio, inputMes, inputPaginas, inputPagIni, inputPagFim].forEach(el =>
+  el.addEventListener('input', atualizaInfo)
+);
+atualizaInfo();
+
+let ordemImpressao = 1;
+function setOrdem(val) {
+  ordemImpressao = val;
+  document.getElementById('btnOrdem1').classList.toggle('ativo', val === 1);
+  document.getElementById('btnOrdem2').classList.toggle('ativo', val === -1);
+}
+
+function gerarEImprimir() {
+  const inicio  = parseInt(inputInicio.value)  || 1;
+  const paginas = parseInt(inputPaginas.value) || 1;
+  const pi      = Math.min(Math.max(parseInt(inputPagIni.value) || 1, 1), paginas);
+  const pf      = Math.min(Math.max(parseInt(inputPagFim.value) || paginas, 1), paginas);
+  const piReal  = Math.min(pi, pf);
+  const pfReal  = Math.max(pi, pf);
+
+  const area = document.getElementById('area-impressao');
+  area.innerHTML = '';
+
+  const ordemPaginas = [];
+  for (let p = piReal - 1; p < pfReal; p++) ordemPaginas.push(p);
+  if (ordemImpressao === -1) ordemPaginas.reverse();
+
+  for (const p of ordemPaginas) {
+    const paginaDiv = document.createElement('div');
+    paginaDiv.className = 'pagina-etiqueta';
+
+    const grade = document.createElement('div');
+    grade.className = 'grade';
+
+    const numBase = inicio + p * POR_PAGINA;
+
+    for (let linha = 0; linha < POR_PAGINA; linha++) {
+      const n = numBase + linha;
+      for (const suf of SUFIXOS) {
+        const etq = document.createElement('div');
+        etq.className = 'etiqueta';
+        etq.textContent = fmt(n) + suf;
+        grade.appendChild(etq);
+      }
+    }
+
+    paginaDiv.appendChild(grade);
+    area.appendChild(paginaDiv);
+  }
+
+  window.print();
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(r => console.log("SW registrado:", r.scope))
+      .catch(e => console.warn("SW falhou:", e));
+  });
+}
+</script>
+</body>
+</html>
