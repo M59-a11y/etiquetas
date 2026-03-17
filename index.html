@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEDC — Gerador de Etiquetas</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0c0c0c;
+  --surface:  #161616;
+  --surface2: #1f1f1f;
+  --border:   #272727;
+  --border2:  #333;
+  --accent:   #f97316;
+  --accent2:  #fb923c;
+  --text:     #f0f0f0;
+  --muted:    #666;
+  --muted2:   #999;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ── Grain ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Grid de fundo ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: .25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout principal ── */
+.shell {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 2rem;
+}
+
+/* ── Cabeçalho ── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3.5rem;
+  animation: fadeUp .6s ease both;
+}
+
+.header-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.header-eyebrow::before,
+.header-eyebrow::after {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+  opacity: .5;
+}
+
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.header-title .dim { color: var(--muted); font-weight: 300; }
+.header-title .accent { color: var(--accent); }
+
+.header-sub {
+  margin-top: .8rem;
+  font-size: .85rem;
+  color: var(--muted2);
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+/* ── Cards ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 320px);
+  gap: 1.2rem;
+  animation: fadeUp .6s .12s ease both;
+}
+
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: border-color .25s, transform .2s, box-shadow .25s;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 30% 0%, rgba(249,115,22,.07) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(249,115,22,.15);
+}
+.card:hover::before { opacity: 1; }
+.card:active { transform: translateY(-1px); }
+
+/* Número do card */
+.card-num {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.6rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--border2);
+  line-height: 1;
+  letter-spacing: -.04em;
+  transition: color .25s;
+  user-select: none;
+}
+.card:hover .card-num { color: rgba(249,115,22,.15); }
+
+/* Ícone */
+.card-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .25s, border-color .25s;
+  flex-shrink: 0;
+}
+.card:hover .card-icon {
+  background: rgba(249,115,22,.1);
+  border-color: rgba(249,115,22,.4);
+}
+.card-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--muted2);
+  transition: stroke .25s;
+}
+.card:hover .card-icon svg { stroke: var(--accent); }
+
+/* Corpo */
+.card-body { flex: 1; }
+
+.card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .4rem;
+}
+
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.card-desc {
+  margin-top: .5rem;
+  font-size: .82rem;
+  color: var(--muted2);
+  line-height: 1.6;
+}
+
+/* Tags */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .2rem;
+}
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .25rem .6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  transition: border-color .25s, color .25s;
+}
+.card:hover .tag {
+  border-color: rgba(249,115,22,.3);
+  color: var(--muted2);
+}
+.tag.hi {
+  border-color: rgba(249,115,22,.3);
+  color: var(--accent);
+  background: rgba(249,115,22,.06);
+}
+
+/* Seta */
+.card-arrow {
+  position: absolute;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.card-arrow svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--muted);
+  transition: stroke .25s;
+}
+.card:hover .card-arrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translate(2px, -2px);
+}
+.card:hover .card-arrow svg { stroke: #000; }
+
+/* ── Rodapé ── */
+.footer {
+  margin-top: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-align: center;
+  animation: fadeUp .6s .24s ease both;
+}
+.footer span { color: var(--border2); margin: 0 .5rem; }
+
+/* ── Animação ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+  .cards { grid-template-columns: 1fr; }
+  .header-title { font-size: 2.4rem; }
+}
+
+@media print { body { display: none; } }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f97316">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Etiquetas CEDC">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="header-eyebrow">CEDC &mdash; Centro Especializado de Diagnóstico do Câncer</div>
+    <h1 class="header-title">
+      <span class="dim">Gerador</span> de<br>
+      <span class="accent">Etiquetas</span>
+    </h1>
+    <p class="header-sub">Selecione o tipo de etiqueta para continuar</p>
+  </header>
+
+  <!-- Cards -->
+  <div class="cards">
+
+    <!-- Card 1: Colacril -->
+    <a class="card" href="etiquetas_colacril_126.html">
+      <div class="card-num">01</div>
+
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="3" y1="15" x2="21" y2="15"/>
+          <line x1="9" y1="3" x2="9" y2="21"/>
+          <line x1="15" y1="3" x2="15" y2="21"/>
+        </svg>
+      </div>
+
+      <div class="card-body">
+        <div class="card-label">Etiqueta adesiva</div>
+        <div class="card-title">Colacril<br>Sequencial</div>
+        <div class="card-desc">
+          Numeração sequencial com ano automático.<br>
+          Formato: <code style="font-size:.78rem;color:var(--accent)">10204/26</code>
+        </div>
+      </div>
+
+      <div class="card-tags">
+        <span class="tag hi">Colacril CA4349</span>
+        <span class="tag">26 × 15 mm</span>
+        <span class="tag">7 × 18</span>
+        <span class="tag">126 etiq/folha</span>
+      </div>
+
+      <div class="card-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- Card 2: Patologia -->
+    <a class="card" href="etiquetas_patologia.html">
+      <div class="card-num">02</div>
+
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
+        </svg>
+      </div>
+
+      <div class="card-body">
+        <div class="card-label">Anatomopatológico</div>
+        <div class="card-title">Patologia<br>com Sufixos</div>
+        <div class="card-desc">
+          Numeração com sufixos A–I por amostra.<br>
+          Formato: <code style="font-size:.78rem;color:var(--accent)">3411-3/2026A</code>
+        </div>
+      </div>
+
+      <div class="card-tags">
+        <span class="tag hi">A4 Landscape</span>
+        <span class="tag">10 colunas</span>
+        <span class="tag">39 linhas</span>
+        <span class="tag">390 etiq/folha</span>
+      </div>
+
+      <div class="card-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    CEDC <span>·</span> TI <span>·</span> João Pessoa — PB <span>·</span> <span id="ano"></span>
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('ano').textContent = new Date().getFullYear();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(r => console.log("SW registrado:", r.scope))
+      .catch(e => console.warn("SW falhou:", e));
+  });
+}
+</script>
+</body>
+</html>
