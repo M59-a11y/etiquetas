@@ -280,7 +280,7 @@ body::before {
 
   .grade {
     display: grid;
-    grid-template-columns: repeat(10, 29.7mm);
+    grid-template-columns: repeat(12, 24.75mm);
     grid-template-rows: repeat(39, 4.5mm);
     gap: 0;
     width: 297mm;
@@ -294,22 +294,22 @@ body::before {
   }
 
   .etiqueta {
-    width: 29.7mm;
+    width: 24.75mm;
     height: 4.5mm;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Roboto Mono', 'Courier New', monospace;
-    font-size: 7pt;
+    font-size: 6.0pt;
     font-weight: 700;
     color: #1a1a1a;
     border-right: 0.2pt solid #bbb;
     border-bottom: 0.2pt solid #bbb;
     overflow: hidden;
     text-align: center;
-    padding: 0 0.5mm;
-    letter-spacing: 0.02em;
-  }
+    padding: 0;
+    letter-spacing: -0.02em;
+}
 }
 </style>
   <link rel="manifest" href="manifest.json">
@@ -327,14 +327,14 @@ body::before {
   <div class="col-marca">
     <div class="linhas-deco"><span></span><span></span><span></span></div>
     <div class="marca-label">// Gerador de etiquetas</div>
-    <h1 class="marca-titulo">Pato<span>logia</span><br>10 Col<br>/Folha</h1>
+    <h1 class="marca-titulo">Pato<span>logia</span><br>12 Col<br>/Folha</h1>
     <p class="marca-sub">
       Numeração com sufixos A–I para anatomopatológico.<br>
       Formato: <strong>3411-3/2026</strong> → <strong>3411-3/2026I</strong>
     </p>
     <div class="badge-row">
-      <span class="badge destaque">10 × 39</span>
-      <span class="badge">390 etiq/folha</span>
+      <span class="badge destaque">12 × 39</span>
+      <span class="badge">468 etiq/folha</span>
       <span class="badge">39 nº base/folha</span>
       <span class="badge">A4 Portrait</span>
     </div>
@@ -454,7 +454,7 @@ const inputPaginas = document.getElementById('numPaginas');
 const inputPagIni  = document.getElementById('pagInicio');
 const inputPagFim  = document.getElementById('pagFim');
 
-const SUFIXOS = ['', 'A','B','C','D','E','F','G','H','I']; // 10 por linha
+const SUFIXOS = ['','A','B','C','D','E','F','G','H','I','J','K']; // 10 por linha
 const POR_PAGINA = 39; // 210mm ÷ 5.3mm = ~39 linhas por folha landscape
 
 function step(id, delta) {
